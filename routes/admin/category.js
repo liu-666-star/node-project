@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {Category} = require('../../models/');
+const {Category, Course} = require('../../models/');
 const {Op} = require("sequelize");
-const { NotFoundError, success, failure } = require("../../utils/response")
+const { NotFoundError } = require('../../utils/errors');
+const { success, failure } = require('../../utils/responses');
+
 /* GET home page. */
 router.get('/', async function(req, res, next) {
     try {
@@ -16,7 +18,7 @@ router.get('/', async function(req, res, next) {
         const offset = (currentPage - 1) * pageSize;
         //数据查询条件
         const condition = {
-            order: [['id', 'DESC']],
+            order: [['id', 'DESC'],['rank','ASC']],
             limit: pageSize,
             offset: offset,
         }
@@ -72,9 +74,14 @@ router.delete('/:id', async function(req, res, next) {
     try{
         // const {id} = req.params;
         const categories = await getArticles(req)
-            // 查询到执行删除
-            await categories.destroy()
-            success(res, '分类删除成功')
+        // 用当前的分类id 去
+        const count = await Course.count({where: {id: req.params.id}});
+        if(count > 0) {
+            throw new Error('当前分类有课程，无法删除');
+        }
+        // 查询到执行删除
+        await categories.destroy()
+        success(res, '分类删除成功')
 
     } catch (error) {
         failure(res, error);

@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {Article} = require('../../models/');
 const {Op} = require("sequelize");
-const { NotFoundError, success, failure } = require("../../utils/response")
+const { NotFoundError } = require('../../utils/errors');
+const { success, failure } = require('../../utils/responses');
+
 /* GET home page. */
 router.get('/', async function(req, res, next) {
     try {
