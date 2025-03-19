@@ -37,6 +37,6 @@ router.get('/', async function(req, res, next) {
     order: [['id', 'desc']],
     limit: 10
   });
-  success(res, '查询成功',{recommendedCourses,likesCourses,introductoryCourses})
+  success(res, '查询成功啦啦啦啦',{recommendedCourses,likesCourses,introductoryCourses})
 });
 module.exports = router;
