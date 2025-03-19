@@ -12,7 +12,7 @@ router.get('/', async function (req, res, next) {
         const categories = await Category.findAll({
             order: [['rank', 'ASC'], ['id', 'DESC']]
         });
-        success(res, '查询分类成功啦啦啦。', { categories });
+        success(res, '查询分类成功啦啦啦111。', { categories });
     } catch (error) {
         failure(res, error);
     }
